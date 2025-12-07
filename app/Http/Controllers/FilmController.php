@@ -26,14 +26,14 @@ class FilmController extends Controller
 
     public function edit($id)
     {
-        $data = Film::findOrFail($id);
-        return view('film.form', compact('data'));
+        $film = Film::findOrFail($id);
+        return view('film.form', compact('film'));
     }
 
     public function update(Request $request, $id)
     {
-        $data = Film::findOrFail($id);
-        $data->update($request->all());
+        $film = Film::findOrFail($id);
+        $film->update($request->all());
         return redirect()->route('film.index')->with('success', 'Film berhasil diperbarui');
     }
 

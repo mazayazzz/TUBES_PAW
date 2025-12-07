@@ -19,16 +19,19 @@ Route::post('/login', [AuthController::class, 'login'])
     ->middleware('guest')
     ->name('login.post');
 
+Route::get('/register', [AuthController::class, 'showRegisterForm'])
+    ->name('register.form');
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register');
+
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-// Halaman utama (opsional)
 Route::get('/dashboard', function () {
-    return view('dashboard'); 
-})->middleware('auth');
-
-
+    return view('dashboard');
+})->middleware('auth')->name('dashboard');
 
 // CRUD lengkap
 Route::resource('film', FilmController::class);

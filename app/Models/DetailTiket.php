@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Pemesanan;
 
 class DetailTiket extends Model
 {
+    use HasFactory;
     protected $table = 'detail_tiket';
-    protected $primaryKey = 'id_detail';
-    public $timestamps = false;
-
     protected $fillable = [
         'id_pemesanan',
         'harga',

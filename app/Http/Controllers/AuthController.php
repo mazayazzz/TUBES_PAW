@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -29,6 +31,31 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'Email atau password salah!',
         ]);
+    }
+
+        public function showRegisterForm()
+    {
+        return view('auth.register'); // buat view baru: resources/views/auth/register.blade.php
+    }
+
+    // Proses register
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        Auth::login($user); // otomatis login setelah register
+
+        return redirect()->route('dashboard'); // arahkan ke dashboard setelah register
     }
 
     // Logout

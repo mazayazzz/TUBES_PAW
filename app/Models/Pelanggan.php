@@ -15,7 +15,6 @@ class Pelanggan extends Model
         'nama',
         'email',
         'nomor_telepon',
-        'alamat'
     ];
 
     public function pemesanan()

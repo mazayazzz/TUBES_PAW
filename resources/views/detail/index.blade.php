@@ -1,33 +1,84 @@
 @extends('layout')
 
+@section('title', 'Daftar Detail Tiket')
+@section('header-title', 'Daftar Detail Tiket')
+
 @section('content')
-<h1 class="text-xl font-bold mb-4">Daftar Detail Tiket</h1>
+<div class="w-full max-w-4xl bg-white p-6 rounded-lg shadow-lg mx-auto">
 
-<a href="{{ route('detail-tiket.create') }}" class="btn btn-primary mb-3">Tambah Detail Tiket</a>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-xl font-bold">Daftar Detail Tiket</h1>
+        <a href="{{ route('detail-tiket.create') }}"
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            Tambah Detail Tiket
+        </a>
+    </div>
 
-<table class="table-auto w-full border">
-    <thead>
-        <tr class="bg-gray-200">
-            <th>ID</th>
-            <th>Pemesanan</th>
-            <th>Jumlah Tiket</th>
-            <th>Harga</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($detail as $d)
-        <tr>
-            <td>{{ $d->id_detail }}</td>
-            <td>{{ $d->pemesanan->id_pemesanan ?? '-' }}</td>
-            <td>{{ $d->tiket }}</td>
-            <td>{{ $d->harga }}</td>
-            <td>
-                <a href="{{ route('detail.edit', $d->id_detail) }}" class="text-blue-500">Edit</a> |
-                <a href="{{ route('detail.show', $d->id_detail) }}" class="text-green-500">Detail</a>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+    <div class="overflow-x-auto">
+        <table class="table-auto w-full border border-gray-200 rounded-lg">
+            <thead class="bg-gray-100">
+                <tr class="text-center">
+                    <th class="px-4 py-2 border">Pemesanan</th>
+                    <th class="px-4 py-2 border">Harga</th>
+                    <th class="px-4 py-2 border">Kategori Tiket</th>
+                    <th class="px-4 py-2 border">Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @forelse ($detail as $d)
+                <tr class="text-center hover:bg-gray-50">
+
+                    <td class="px-4 py-2 border">
+                        {{ $d->pemesanan->id_pemesanan ?? '-' }}
+                    </td>
+
+                    <td class="px-4 py-2 border">
+                        Rp {{ number_format($d->harga, 0, ',', '.') }}
+                    </td>
+
+                    <td class="px-4 py-2 border">
+                        {{ $d->kategori_tiket }}
+                    </td>
+
+                    <td class="px-4 py-2 border">
+                        <div class="flex justify-center space-x-3">
+
+                            <a href="{{ route('detail-tiket.edit', $d) }}"
+                               class="text-blue-600 hover:underline">
+                                Edit
+                            </a>
+
+                            <a href="{{ route('detail-tiket.show', $d) }}"
+                               class="text-green-600 hover:underline">
+                                Detail
+                            </a>
+
+                            <form action="{{ route('detail-tiket.destroy', $d) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Yakin ingin menghapus detail tiket ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:underline">
+                                    Hapus
+                                </button>
+                            </form>
+
+                        </div>
+                    </td>
+
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4"
+                        class="text-center px-4 py-3 border text-gray-500">
+                        Belum ada data detail tiket.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+</div>
 @endsection

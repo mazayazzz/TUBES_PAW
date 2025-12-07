@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jadwal', function (Blueprint $table) {
             $table->id('id_jadwal');
             $table->unsignedBigInteger('id_film');
-            $table->dateTime('waktu_pemutaran'); // ✅ Pastikan baris ini ada
+            $table->dateTime('waktu_pemutaran'); 
             $table->foreign('id_film')->references('id_film')->on('film')->onDelete('cascade');
         });
     }

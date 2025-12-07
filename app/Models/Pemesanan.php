@@ -13,37 +13,21 @@ class Pemesanan extends Model
 {
     protected $table = 'pemesanan';
     protected $primaryKey = 'id_pemesanan';
-    public $timestamps = false;
+    public $timestamps = true; // kalau ada created_at/updated_at
 
     protected $fillable = [
         'id_pelanggan',
         'id_jadwal',
-        'id_studio',
         'jumlah_tiket'
     ];
 
     public function pelanggan()
     {
-        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
-    }
-
-    public function detail()
-    {
-        return $this->hasMany(DetailTiket::class, 'id_pemesanan');
-    }
-
-    public function pembayaran()
-    {
-        return $this->hasOne(Pembayaran::class, 'id_pemesanan');
+        return $this->belongsTo(Pelanggan::class, 'id_pelanggan', 'id_pelanggan');
     }
 
     public function jadwal()
     {
         return $this->belongsTo(Jadwal::class, 'id_jadwal');
-    }
-
-    public function studio()
-    {
-        return $this->belongsTo(Studio::class, 'id_studio');
     }
 }

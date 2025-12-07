@@ -24,7 +24,7 @@ class PelangganController extends Controller
             'nama' => 'required',
             'email' => 'required|email',
             'nomor_telepon' => 'required',
-            'alamat' => 'required'
+
         ]);
 
         Pelanggan::create($request->all());
@@ -33,15 +33,21 @@ class PelangganController extends Controller
 
     public function edit($id)
     {
-        $data = Pelanggan::findOrFail($id);
-        return view('pelanggan.form', compact('data'));
+        $pelanggan = Pelanggan::findOrFail($id);
+        return view('pelanggan.form', compact('pelanggan'));
     }
 
     public function update(Request $request, $id)
     {
-        $data = Pelanggan::findOrFail($id);
-        $data->update($request->all());
+        $pelanggan = Pelanggan::findOrFail($id);
+        $pelanggan->update($request->all());
         return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan berhasil diupdate');
+    }
+
+        public function show($id)
+    {
+        $pelanggan = Pelanggan::findOrFail($id);
+        return view('pelanggan.show', compact('pelanggan'));
     }
 
     public function destroy($id)

@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Film;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Jadwal extends Model
 {
     use HasFactory;
+
     protected $table = 'jadwal';
     protected $primaryKey = 'id_jadwal';
     public $timestamps = false;
@@ -22,4 +22,10 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Film::class, 'id_film');
     }
+
+    public function studio()
+{
+    return $this->belongsTo(Studio::class, 'id_studio');
+}
+
 }

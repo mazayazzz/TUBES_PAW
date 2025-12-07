@@ -22,23 +22,46 @@ class PembayaranController extends Controller
 
     public function store(Request $request)
     {
-        Pembayaran::create($request->all());
+        $validated = $request->validate([
+            'id_pemesanan' => 'required|exists:pemesanan,id',
+            'total_harga' => 'required|numeric',
+            'metode_pembayaran' => 'required|string|max:255',
+            'tanggal_pembayaran' => 'required|date',
+        ]);
+
+        Pembayaran::create($validated);
+
         return redirect()->route('pembayaran.index')->with('success','Pembayaran berhasil ditambahkan');
     }
-
     public function edit($id)
     {
-        $data = Pembayaran::findOrFail($id);
+        $pembayaran = Pembayaran::findOrFail($id);
         $pemesanan = Pemesanan::all();
 
-        return view('pembayaran.form', compact('data','pemesanan'));
+        return view('pembayaran.form', compact('pembayaran','pemesanan'));
     }
 
     public function update(Request $request, $id)
     {
-        $data = Pembayaran::findOrFail($id);
-        $data->update($request->all());
+        $pembayaran = Pembayaran::findOrFail($id);
+
+        $validated = $request->validate([
+            'id_pemesanan' => 'required|exists:pemesanan,id',
+            'total_harga' => 'required|numeric',
+            'metode_pembayaran' => 'required|string|max:255',
+            'tanggal_pembayaran' => 'required|date',
+        ]);
+
+        $pembayaran->update($validated);
+
         return redirect()->route('pembayaran.index')->with('success','Pembayaran berhasil diperbarui');
+    }
+
+        public function show($id)
+    {
+        $pembayaran = Pembayaran::findOrFail($id);
+
+        return view('pembayaran.show', compact('pembayaran'));
     }
 
     public function destroy($id)

@@ -32,9 +32,15 @@ class StudioController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = Studio::findOrFail($id);
-        $data->update($request->all());
+        $studio = Studio::findOrFail($id);
+        $studio->update($request->all());
         return redirect()->route('studio.index')->with('success', 'Studio berhasil diperbarui');
+    }
+
+        public function show($id)
+    {
+        $studio = Studio::findOrFail($id);
+        return view('studio.show', compact('studio'));
     }
 
     public function destroy($id)

@@ -12,7 +12,7 @@ class PemesananController extends Controller
 {
     public function index()
     {
-        $pemesanan = Pemesanan::with(['pelanggan','jadwal','studio'])->get();
+        $pemesanan = Pemesanan::with(['pelanggan', 'jadwal.film', 'jadwal.studio'])->get();
         return view('pemesanan.index', compact('pemesanan'));
     }
 
@@ -33,19 +33,25 @@ class PemesananController extends Controller
 
     public function edit($id)
     {
-        $data = Pemesanan::findOrFail($id);
+        $pemesanan = Pemesanan::findOrFail($id);
         $pelanggan = Pelanggan::all();
         $jadwal = Jadwal::all();
         $studio = Studio::all();
 
-        return view('pemesanan.form', compact('data','pelanggan','jadwal','studio'));
+        return view('pemesanan.form', compact('pemesanan','pelanggan','jadwal','studio'));
     }
 
     public function update(Request $request, $id)
     {
-        $data = Pemesanan::findOrFail($id);
-        $data->update($request->all());
+        $pemesanan = Pemesanan::findOrFail($id);
+        $pemesanan->update($request->all());
         return redirect()->route('pemesanan.index')->with('success','Pemesanan berhasil diperbarui');
+    }
+
+        public function show($id)
+    {
+        $pemesanan = Pemesanan::with(['pelanggan', 'jadwal', 'jadwal.film', 'jadwal.studio'])->findOrFail($id);
+        return view('pemesanan.show', compact('pemesanan'));
     }
 
     public function destroy($id)
